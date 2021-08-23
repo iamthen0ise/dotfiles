@@ -14,6 +14,6 @@ alias pr='poetry run'
 alias prda='poetry run django-admin'
 
 # Docker
-alias dc='docker compose'
+alias dc='docker-compose'
 
 alias d='docker'
