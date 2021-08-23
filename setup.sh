@@ -14,6 +14,7 @@ git clone git@github.com:mafredri/zsh-async.git $ZSH_CONFIG_DIR/zsh-async
 git clone git@github.com:unixorn/fzf-zsh-plugin.git $ZSH_CONFIG_DIR/fzf-zsh-plugin
 
 cp zsh-config/*.zsh $ZSH_CONFIG_DIR/.
+cp zsh-config/dircolors $ZSH_CONFIG_DIR/.
 cat .zshrc > ~/.zshrc
 
 source ~/.zshrc
