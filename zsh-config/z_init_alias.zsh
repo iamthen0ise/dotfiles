@@ -7,10 +7,10 @@ alias gitup='git push origin'
 alias gitdown='git pull'
 
 alias status='tig status'
+alias gl='fglog'
 
 # Poetry
 alias pr='poetry run'
-
 alias prda='poetry run django-admin'
 
 # Docker
