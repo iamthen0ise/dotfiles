@@ -8,6 +8,8 @@ fi
 
 mkdir -p $ZSH_CONFIG_DIR
 
+brew install bat
+
 git clone git@github.com:zsh-users/zsh-history-substring-search.git $ZSH_CONFIG_DIR/zsh-history-substring-search
 git clone git@github.com:zsh-users/zsh-syntax-highlighting.git $ZSH_CONFIG_DIR/zsh-syntax-highlighting
 git clone git@github.com:mafredri/zsh-async.git $ZSH_CONFIG_DIR/zsh-async
