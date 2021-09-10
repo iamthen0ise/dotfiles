@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+unsetopt nomatch
+
 if [ -n "${ZSH_CONFIG_DIR+1}" ]; then
     export ZSH_CONFIG_DIR=$ZSH_CONFIG_DIR
 else
