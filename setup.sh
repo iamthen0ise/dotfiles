@@ -8,15 +8,21 @@ fi
 
 mkdir -p $ZSH_CONFIG_DIR
 
-brew install bat
+if uname -r |grep -q 'Darwin' ; then
+    brew install bat vim 
+fi
+
+if uname -r |grep -q 'Linux' ; then
+    sudo apt install vim bat
+fi
 
 git clone git@github.com:zsh-users/zsh-history-substring-search.git $ZSH_CONFIG_DIR/zsh-history-substring-search
 git clone git@github.com:zsh-users/zsh-syntax-highlighting.git $ZSH_CONFIG_DIR/zsh-syntax-highlighting
 git clone git@github.com:mafredri/zsh-async.git $ZSH_CONFIG_DIR/zsh-async
 git clone git@github.com:unixorn/fzf-zsh-plugin.git $ZSH_CONFIG_DIR/fzf-zsh-plugin
 
-cp zsh-config/*.zsh $ZSH_CONFIG_DIR/.
-cp zsh-config/dircolors $ZSH_CONFIG_DIR/.
+cp .zsh-config/*.zsh $ZSH_CONFIG_DIR/.
+cp .zsh-config/dircolors $ZSH_CONFIG_DIR/.
 cat .zshrc > ~/.zshrc
 
 source ~/.zshrc

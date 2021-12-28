@@ -7,6 +7,7 @@ setopt EXTENDED_GLOB
 
 
 autoload -U compinit; compinit -i
+_comp_options+=(globdots) # With hidden files
 
 # History
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
@@ -18,6 +19,8 @@ setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
 setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+
+export HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' complete-options true
@@ -40,6 +43,15 @@ zstyle ':completion:*:*:*:*:warnings' format ' %F{red}-- no matches found --%f'
 zstyle ':completion:*:*:*:*:default' list-colors ${(s.:.)LS_COLORS}
 
 
+# Only display some tags for the command cd
+zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+# zstyle ':completion:*:complete:git:argument-1:' tag-order !aliases
+
+# Required for completion to be in good groups (named after the tags)
+zstyle ':completion:*' group-name ''
+
+zstyle ':completion:*:*:-command-:*:*' group-order aliases builtins functions commands
+
 autoload colors
 colors
 
@@ -48,8 +60,6 @@ zle -N history-beginning-search-menu
 bindkey '^X^X' history-beginning-search-menu
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
-HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 # export LSCOLORS="Gxfxcxdxbxegedabagacad"
 # Find the option for using colors in ls, depending on the version: Linux or BSD
