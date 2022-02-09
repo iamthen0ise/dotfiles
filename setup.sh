@@ -1,4 +1,16 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
+
+case "$OSTYPE" in
+  darwin*)   os_icon="🍏" ;; 
+  linux*)    os_icon="🐧" ;;
+  *)         os_icon="👾" ;;
+esac
+
+print "Hello, ${os_icon}"
+
+print "Setting up dotfiles..."
+
+print "Creating config dir..."
 
 if [ -n "${ZSH_CONFIG_DIR+1}" ]; then
     export ZSH_CONFIG_DIR=$ZSH_CONFIG_DIR
@@ -8,21 +20,31 @@ fi
 
 mkdir -p $ZSH_CONFIG_DIR
 
-if uname -r |grep -q 'Darwin' ; then
-    brew install bat vim 
-fi
+software_to_install=(
+    vim
+    bat
+)
 
-if uname -r |grep -q 'Linux' ; then
-    sudo apt install vim bat
-fi
+repos=(
+    'git@github.com:mafredri/zsh-async.git'
+    'git@github.com:unixorn/fzf-zsh-plugin.git'
+    'git@github.com:zsh-users/zsh-syntax-highlighting.git'
+    'git@github.com:zsh-users/zsh-history-substring-search.git'
+)
 
-git clone git@github.com:zsh-users/zsh-history-substring-search.git $ZSH_CONFIG_DIR/zsh-history-substring-search
-git clone git@github.com:zsh-users/zsh-syntax-highlighting.git $ZSH_CONFIG_DIR/zsh-syntax-highlighting
-git clone git@github.com:mafredri/zsh-async.git $ZSH_CONFIG_DIR/zsh-async
-git clone git@github.com:unixorn/fzf-zsh-plugin.git $ZSH_CONFIG_DIR/fzf-zsh-plugin
+
+printf 'Installing Zsh Plugins: %s \n' "${repos[@]}"
+for repo in $repos; do
+    if ! git clone $repo $ZSH_CONFIG_DIR/. 2>/dev/null ; then 
+        continue
+    fi
+done
+
+print "Copy config files..."
 
 cp .zsh-config/*.zsh $ZSH_CONFIG_DIR/.
 cp .zsh-config/dircolors $ZSH_CONFIG_DIR/.
 cat .zshrc > ~/.zshrc
 
+print "All Done! Sourcing ~./zshrc"
 source ~/.zshrc
