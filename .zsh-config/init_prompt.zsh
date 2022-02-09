@@ -2,11 +2,10 @@
 
 setopt prompt_subst
 
-local GIT_PROMPT_DECORATING_ICON="●"
 local GIT_PROMPT_PREFIX="%F{$reset_color%}%F{white}"
 local GIT_PROMPT_SUFFIX=""
-local GIT_PROMPT_DIRTY="%F{red} {$GIT_PROMPT_DECORATING_ICON} %F{white}%F{reset_color}"
-local GIT_PROMPT_CLEAN="%F{reset_color} {$GIT_PROMPT_DECORATING_ICON}"
+local GIT_PROMPT_DIRTY="%F{red} ● %F{white}%F{reset_color}"
+local GIT_PROMPT_CLEAN="%F{reset_color} ● "
 
 local COMMAND_SUCCESS="%F{reset_color}> %F{reset_color}"
 local COMMAND_FAIL="%F{red}x %F{reset_color}"
