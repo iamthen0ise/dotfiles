@@ -46,5 +46,7 @@ cp .zsh-config/*.zsh $ZSH_CONFIG_DIR/.
 cp .zsh-config/dircolors $ZSH_CONFIG_DIR/.
 cat .zshrc > ~/.zshrc
 
+cat .tmux.cinf > ~/.tmux.conf
+
 print "All Done! Sourcing ~./zshrc"
 source ~/.zshrc
