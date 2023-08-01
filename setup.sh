@@ -33,20 +33,31 @@ repos=(
 )
 
 
+
 printf 'Installing Zsh Plugins: %s \n' "${repos[@]}"
-for repo in $repos; do
-    if ! git clone $repo $ZSH_CONFIG_DIR/. 2>/dev/null ; then 
-        continue
+for repo in "${repos[@]}"; do
+    repo_name=$(basename "$repo" ".git")
+    target_dir="$ZSH_CONFIG_DIR/$repo_name"
+    
+    if [ -d "$target_dir" ]; then
+        # If the directory already exists, remove it and clone again
+        print "Removing existing directory: $repo_name"
+        rm -rf "$target_dir"
+    fi
+
+    if git clone "$repo" "$target_dir" 2>/dev/null ; then 
+        print "Cloned: $repo_name"
+    else
+        print "Failed to clone: $repo_name"
     fi
 done
-
 print "Copy config files..."
 
 cp .zsh-config/*.zsh $ZSH_CONFIG_DIR/.
 cp .zsh-config/dircolors $ZSH_CONFIG_DIR/.
 cat .zshrc > ~/.zshrc
 
-cat .tmux.cinf > ~/.tmux.conf
+cat .tmux.conf > ~/.tmux.conf
 
 print "All Done! Sourcing ~./zshrc"
 source ~/.zshrc
