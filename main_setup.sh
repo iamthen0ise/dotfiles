@@ -1,19 +1,11 @@
 #!/usr/bin/env zsh
 
-case "$OSTYPE" in
-  darwin*)   
-    os_icon="🍏"
-    install_cmd="brew install"
-    ;; 
-  linux*)    
-    os_icon="🐧"
-    install_cmd="sudo apt install -y"
-    ;;
-  *)         
-    os_icon="👾"
-    print "Unsupported OS type, aborting setup..."
-    exit 1
-    ;;
+os_type=$(uname -s)
+
+case "$os_type" in
+  Darwin*)   os_icon="🍏" ;; 
+  Linux*)    os_icon="🐧" ;;
+  *)         os_icon="👾" ;;
 esac
 
 print "Hello, ${os_icon}"

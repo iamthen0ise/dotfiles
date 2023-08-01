@@ -5,7 +5,15 @@ repository='https://github.com/your_username/your_repository.git'
 script_name='main_setup.sh'
 
 # Define the install command based on the operating system
-case "$OSTYPE" in
+os_type=$(uname -s)
+
+case "$os_type" in
+  Darwin*)   os_icon="🍏" ;; 
+  Linux*)    os_icon="🐧" ;;
+  *)         os_icon="👾" ;;
+esac
+
+case "$os_type" in
   darwin*)   
     install_cmd="brew install"
     ;; 
