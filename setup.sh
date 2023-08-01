@@ -1,63 +1,48 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
+# Define the repository and script name
+repository='https://github.com/your_username/your_repository.git'
+script_name='main_setup.sh'
+
+# Define the install command based on the operating system
 case "$OSTYPE" in
-  darwin*)   os_icon="🍏" ;; 
-  linux*)    os_icon="🐧" ;;
-  *)         os_icon="👾" ;;
+  darwin*)   
+    install_cmd="brew install"
+    ;; 
+  linux*)    
+    install_cmd="sudo apt install -y"
+    ;;
+  *)         
+    echo "Unsupported OS type, aborting setup..."
+    exit 1
+    ;;
 esac
 
-print "Hello, ${os_icon}"
-
-print "Setting up dotfiles..."
-
-print "Creating config dir..."
-
-if [ -n "${ZSH_CONFIG_DIR+1}" ]; then
-    export ZSH_CONFIG_DIR=$ZSH_CONFIG_DIR
-else
-    export ZSH_CONFIG_DIR=~/.zsh-config
+# Check if git is installed
+if ! command -v git &> /dev/null; then
+    echo "Git not found, installing..."
+    $install_cmd git
 fi
 
-mkdir -p $ZSH_CONFIG_DIR
+# Clone the repository
+if git clone "$repository" 2>/dev/null ; then 
+    echo "Cloned: $repository"
+else
+    echo "Failed to clone: $repository"
+    exit 1
+fi
 
-software_to_install=(
-    vim
-    bat
-)
+# Extract repo name from the repository URL
+repo_name=$(basename "$repository" ".git")
 
-repos=(
-    'git@github.com:mafredri/zsh-async.git'
-    'git@github.com:unixorn/fzf-zsh-plugin.git'
-    'git@github.com:zsh-users/zsh-syntax-highlighting.git'
-    'git@github.com:zsh-users/zsh-history-substring-search.git'
-)
+# Change directory to the cloned repository
+cd "$repo_name"
 
-
-
-printf 'Installing Zsh Plugins: %s \n' "${repos[@]}"
-for repo in "${repos[@]}"; do
-    repo_name=$(basename "$repo" ".git")
-    target_dir="$ZSH_CONFIG_DIR/$repo_name"
-    
-    if [ -d "$target_dir" ]; then
-        # If the directory already exists, remove it and clone again
-        print "Removing existing directory: $repo_name"
-        rm -rf "$target_dir"
-    fi
-
-    if git clone "$repo" "$target_dir" 2>/dev/null ; then 
-        print "Cloned: $repo_name"
-    else
-        print "Failed to clone: $repo_name"
-    fi
-done
-print "Copy config files..."
-
-cp .zsh-config/*.zsh $ZSH_CONFIG_DIR/.
-cp .zsh-config/dircolors $ZSH_CONFIG_DIR/.
-cat .zshrc > ~/.zshrc
-
-cat .tmux.conf > ~/.tmux.conf
-
-print "All Done! Sourcing ~./zshrc"
-source ~/.zshrc
+# Check if the script exists and is executable
+if [[ -f $script_name && -x $script_name ]]; then
+    echo "Running the script: $script_name"
+    ./$script_name
+else
+    echo "The script: $script_name does not exist or is not executable"
+    exit 1
+fi
